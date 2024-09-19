@@ -1,0 +1,16 @@
+.logo {
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+  padding: 16px;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
