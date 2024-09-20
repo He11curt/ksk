@@ -1,57 +1,26 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button } from 'antd';
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, HomeOutlined, DashboardOutlined } from '@ant-design/icons';
-import './App.css'; // Custom styles
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './components/Home';
+import Login from './components/Login';
 
-const { Header, Sider, Content } = Layout;
-
-const App = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
+function App() {
+  // State to track if user is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      {/* Sidebar */}
-      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-        <div className="logo" style={{ color: 'white', padding: '16px', textAlign: 'center' }}>
-          {collapsed ? 'K' : 'KSK Dashboard'}
-        </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<HomeOutlined />}>
-            Home
-          </Menu.Item>
-          <Menu.Item key="2" icon={<DashboardOutlined />}>
-            Dashboard
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UserOutlined />}>
-            Profile
-          </Menu.Item>
-        </Menu>
-      </Sider>
+    <Router>
+      <Routes>
+        {/* Protected Route: Redirect to /login if not logged in */}
+        <Route 
+          path="/" 
+          element={isLoggedIn ? <Home setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} 
+        />
 
-      {/* Main Layout */}
-      <Layout className="site-layout">
-        {/* Topbar */}
-        <Header className="site-layout-background" style={{ padding: 0 }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={toggleCollapsed}
-            style={{ marginLeft: 16 }}
-          />
-        </Header>
-
-        {/* Content Area */}
-        <Content style={{ margin: '24px 16px', padding: 24, background: '#fff' }}>
-          <h1>Welcome to the Dashboard</h1>
-          <p>This is the content area of your dashboard.</p>
-        </Content>
-      </Layout>
-    </Layout>
+        {/* Public Route: Login page */}
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;
